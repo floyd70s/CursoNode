@@ -17,9 +17,15 @@
     "express": "^4.17.1",
     "jwt-simple": "^0.5.6",
     "moment": "^2.24.0",
-    "mongoose": "^5.7.13",
+    "mongo": "^0.1.0",
+    "mongodb": "^3.3.5",
+    "mongoose": "^5.7.14",
     "mongoose-pagination": "^1.0.0",
     "nodemon": "^2.0.1",
+<<<<<<< HEAD
     "webpack-dev-server": "^3.9.0"
+=======
+    "operations": "^0.1.2"
+>>>>>>> 1ae184afad0f3df95f287aacebf7b69cb693efa2
   }
 }
