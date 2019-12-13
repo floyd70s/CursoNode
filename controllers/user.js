@@ -40,16 +40,46 @@ function saveUser(req, res){
                     }
                 })
             }
+            else{
+                res.status(500).send({message:'complete los campos'})
+            }
         } )
     }
-    else{
-        res.status(500).send({message:'complete los campos'})
-    }
+    
     console.log(params)
 }
+function loginUser(req,res){
+    var params=req.body
+    var email= params.email
+    var password= params.password
 
+    User.findOne({email:email.toLowerCase()},(err,user)=>{
+        if(err){
+            res.status(500).send({message:'Error en la peticion'})
+        }else{
+            if(!user){
+                res.status(404).send({message:'El usuario no Existe'})
+            }else {
+                //comprobar contraseña
+                bcrypt.compare(password,user.password,function(err, check){
+                if (check){
+                    //devolver datos usuario 
+                    if(params.gethash){
+                        //devolver token
+                    }else{
+                        res.status(200).send({user})
+                    }
+                }else {
+                    res.status(404).send({message:'El usuario no Existe'})
+                }
+            })
+        }
 
+    }
+})
+}
 module.exports={
     pruebas,
-    saveUser
+    saveUser,
+    loginUser
 }
