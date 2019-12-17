@@ -1,7 +1,8 @@
 'use strict'
 var jwt = require('jwt-simple')
 var moment = require('moment')
-var secret = 'clave_secreta_curso'
+var secret= require('../secret')
+
 
 
 exports.ensureAuth = function (req, res, next) {
