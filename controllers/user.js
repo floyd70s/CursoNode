@@ -1,5 +1,6 @@
 'use strict'
-
+var fs = require('fs')
+var path= require('path')
 var User = require('../models/user')
 var bcrypt = require('bcrypt-nodejs')
 var jwt = require('../services/jwt')
@@ -118,7 +119,12 @@ function updateUser(req, res) {
         }
     })
 }
-
+/**
+ * @author CPerez
+ * @param {*} req 
+ * @param {*} res
+ * @description funcion que permite subir una imagen al usuario 
+ */
 function uploadImage(req, res) {
     var userId = req.params.id
     var file_name = 'No subido...'
@@ -146,10 +152,28 @@ function uploadImage(req, res) {
     }
 }
 
+/**
+ * @author Cperez
+ * @param {*} req 
+ * @param {*} res 
+ */
+function getImageFile(req,res){
+    var imageFile= req.params.imageFile
+    var path_file='./uploads/user/'+imageFile
+    fs.exists(path_file,function(exists){
+        if(exists){
+            res.sendFile(path.resolve(path_file))
+        }else{
+            res.status(200).send({message:'no existe la imagen'})
+        }
+    })
+}
+
 module.exports = {
     pruebas,
     saveUser,
     loginUser,
     updateUser,
-    uploadImage
+    uploadImage,
+    getImageFile
 }
