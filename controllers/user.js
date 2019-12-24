@@ -11,8 +11,6 @@ function pruebas(req, res) {
         message: 'prueba de controlador'
     })
 }
-
-
 /**
  * @author CPerez
  * @param {*} req 
@@ -57,7 +55,6 @@ function saveUser(req, res) {
 
     console.log(params)
 }
-
 /**
  * @author CPerez
  * @param {*} req 
@@ -151,7 +148,6 @@ function uploadImage(req, res) {
         res.status(200).send({ message: 'No se ha subido ninguna imagen' })
     }
 }
-
 /**
  * @author Cperez
  * @param {*} req 
