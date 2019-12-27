@@ -68,21 +68,22 @@ function saveArtist(req, res) {
     })
 
 }
+
+
 function updateArtist(req,res){
     var artistId= req.params.artistId
     var update= req.body
 
-    Artist.findByIdAndUpdate(artistId,update,(err,artistUpdated)=>{
-        if(err){
-            res.status(500).send({message:'Error al guardar el artista'})
-        }else{
-            if(!artistUpdated){
-                res.status(400).send({message:'El artista no ha sido actualizado'})
-            }else{
-                res.status(200).send({artist:artistUpdated})
+    Artist.findByIdAndUpdate(artistId, update, (err, artistUpdated) => {
+        if (err) {
+            res.status(500).send({ message: 'Error al actualizar Artista' })
+        } else {
+            if (!artistUpdated) {
+                res.status(404).send({ message: 'No se ha podido actualizar el artista' })
+            } else {
+                res.status(200).send({ user: artistUpdated })
             }
         }
-
     })
 }
 
