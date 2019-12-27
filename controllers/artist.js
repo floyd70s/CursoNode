@@ -2,16 +2,15 @@
 
 var path = require('path')
 var fs = require('fs')
-var mongoosePaginate = require('mongoose-pagination')
-
 var Artist = require('../models/artist')
 var Album = require('../models/album')
 var Song = require('../models/song')
+var mongoosePaginate = require('mongoose-pagination')
 
 function getArtist(req, res) {
     //res.status('200').send({message:'metodo getArtist del controlador artist.js'})
     var artistId = req.params.artistId
-
+    
     Artist.findById(artistId, (err, artist) => {
         if (err) {
             res.status(500).send({ message: 'error en la peticion' })
@@ -24,9 +23,7 @@ function getArtist(req, res) {
         }
     })
 }
-
 function getArtists(req, res) {
-
     if (req.params.page) {
         var page = req.params.page
     } else {
@@ -34,11 +31,11 @@ function getArtists(req, res) {
     }
     var itemsPerPage = 3
 
-    Artist.find().sort('name').pagintate(page, itemsPerPage, function (arr, artist, total) {
+    Artist.find().sort('name').paginate(page, itemsPerPage, function(err, artists, total) {
         if (err) {
             res.status(500).send({ message: 'Error en la peticion' })
         } else {
-            if (!artist) {
+            if (!artists) {
                 res.status(404).send({ message: 'el artista no existe' })
             } else {
                 return res.status(200).send({
@@ -71,9 +68,28 @@ function saveArtist(req, res) {
     })
 
 }
+function updateArtist(req,res){
+    var artistId= req.params.artistId
+    var update= req.body
+
+    Artist.findByIdAndUpdate(artistId,update,(err,artistUpdated)=>{
+        if(err){
+            res.status(500).send({message:'Error al guardar el artista'})
+        }else{
+            if(!artistUpdated){
+                res.status(400).send({message:'El artista no ha sido actualizado'})
+            }else{
+                res.status(200).send({artist:artistUpdated})
+            }
+        }
+
+    })
+}
+
 
 module.exports = {
     getArtist,
     saveArtist,
-    getArtists
+    getArtists,
+    updateArtist
 }
