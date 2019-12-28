@@ -2,44 +2,6 @@
 
 var path = require('path')
 var fs = require('fs')
-<<<<<<< HEAD
-var mogoosePaginate=require('mongoosePagination')
-
-var Artist= require('../models/artist')
-var Album= require('../models/album')
-var Song= require('../models/song')
-
-function getArtists(req,res){
-    var page= req.params.page
-    var itemsPerPage=3
-
-    artist.find().sort('name').paginate(page,itemsPerPage,funcion(err,artists,total){
-        if(err){
-            res.status(500).send({message:'error en la peticion'})
-        }else{
-            if(!artists){
-                res.status(404).send({message:'no hay artistas'})
-            }else{
-                return res.status(200).send({
-                    pages:total,
-                    artists:artists
-                })
-            }
-        }
-    })
-}
-
-function getArtist(req,res){
-    var artistId=req.params.id
-    Artist.findById(artistId,(err,artist)=>{
-        if(err){
-            res.status(500).send({message:"Error en la peticion"})
-        }else{
-            if(!artist){
-                res.status(404).send({message:"El artista no existe"})
-            }else{
-                res.status(200).send({artist})
-=======
 var Artist = require('../models/artist')
 var Album = require('../models/album')
 var Song = require('../models/song')
@@ -57,7 +19,6 @@ function getArtist(req, res) {
                 res.status(400).send({ message: 'el artista no existe' })
             } else {
                 res.status(200).send({ artist })
->>>>>>> d0f548a1bd5c0a7294bb0ea2b3ad282e9f8ef2a3
             }
         }
     })
@@ -70,15 +31,6 @@ function getArtists(req, res) {
     }
     var itemsPerPage = 3
 
-<<<<<<< HEAD
-/**
- * @author CperezD
- * @param {} req 
- * @param {*} res 
- * @description funcion para guardar el artista
- */
-function saveArtist(req,res){
-=======
     Artist.find().sort('name').paginate(page, itemsPerPage, function(err, artists, total) {
         if (err) {
             res.status(500).send({ message: 'Error en la peticion' })
@@ -95,7 +47,6 @@ function saveArtist(req,res){
     })
 }
 function saveArtist(req, res) {
->>>>>>> d0f548a1bd5c0a7294bb0ea2b3ad282e9f8ef2a3
     var artist = new Artist()
     var params = req.body
 
@@ -120,7 +71,7 @@ function saveArtist(req, res) {
 
 
 function updateArtist(req,res){
-    var artistId= req.params.artistId
+    var artistId= req.params.id
     var update= req.body
 
     Artist.findByIdAndUpdate(artistId, update, (err, artistUpdated) => {
@@ -139,11 +90,7 @@ function updateArtist(req,res){
 
 module.exports = {
     getArtist,
-<<<<<<< HEAD
-    saveArtist  
-=======
     saveArtist,
     getArtists,
     updateArtist
->>>>>>> d0f548a1bd5c0a7294bb0ea2b3ad282e9f8ef2a3
 }
