@@ -8,9 +8,7 @@ var Song = require('../models/song')
 var mongoosePaginate = require('mongoose-pagination')
 
 function getArtist(req, res) {
-    //res.status('200').send({message:'metodo getArtist del controlador artist.js'})
-    var artistId = req.params.artistId
-    
+    var artistId = req.params.artistId    
     Artist.findById(artistId, (err, artist) => {
         if (err) {
             res.status(500).send({ message: 'error en la peticion' })
@@ -29,7 +27,7 @@ function getArtists(req, res) {
     } else {
         var page = 1
     }
-    var itemsPerPage = 3
+    var itemsPerPage = 10
 
     Artist.find().sort('name').paginate(page, itemsPerPage, function(err, artists, total) {
         if (err) {
@@ -69,7 +67,6 @@ function saveArtist(req, res) {
 
 }
 
-
 function updateArtist(req,res){
     var artistId= req.params.id
     var update= req.body
@@ -87,10 +84,26 @@ function updateArtist(req,res){
     })
 }
 
+function deleteArtist(req,res){
+    var artistId= req.params.id
+    Artist.findByIdAndRemove(artistId,(err,artistRemoved)=>{
+        if(err){
+            res.status(500).send({ message: 'Error al borrar Artista' })
+        }else{
+            if(!deleteArtist){
+                res.status(404).send({ message: 'No se ha podido borrar el artista' })
+            } else{
+                res.status(200).send({artistRemoved})
+            }
+        }
+    })
+}
+
 
 module.exports = {
     getArtist,
     saveArtist,
     getArtists,
-    updateArtist
+    updateArtist,
+    deleteArtist
 }
