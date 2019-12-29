@@ -73,8 +73,84 @@ function saveSong(req, res) {
 
 
 
+function updateSong(req, res) {
+    var songId= req.params.id
+    var update = req.body
+
+    Song.findByIdAndUpdate(songId, update, (err, songUpdated) => {
+        if (err) {
+            res.status(500).send({ message: 'Error al actualizar la cancion' })
+        } else {
+            if (!songUpdated) {
+                res.status(404).send({ message: 'No se ha podido actualizar la cancion' })
+            } else {
+                res.status(200).send({ song: songUpdated })
+            }
+        }
+    })
+}
+
+function deleteSong(req, res) {
+    var songId = req.params.id
+    Song.findByIdAndRemove(songId, (err, songRemoved) => {
+        if (err) {
+            res.status(500).send({ message: 'Error al borrar cancion' })
+        } else {
+            if (!deleteSong) {
+                res.status(404).send({ message: 'No se ha podido borrar la cancion' })
+            } else {
+                res.status(200).send({ song: songRemoved })
+            }
+        }
+    })
+}
+
+function uploadFile(req, res) {
+    var songId = req.params.id
+    var file_name = 'no subido.'
+
+    if (req.files) {
+        var file_path = req.files.file.path
+        var file_split = file_path.split('/')
+        var file_name = file_split[2]
+        var ext_file = file_name.split('.')
+        var file_ext = ext_file[1]
+
+        if (file_ext == 'mp3' || file_ext == 'wav' || file_ext == 'flac') {
+            Song.findByIdAndUpdate(songId, { file: file_name }, (err, songUpdated) => {
+                if (!songUpdated) {
+                    res.status(404).send({ message: 'No se ha podido actualizar el archivo de la cancion' })
+                } else {
+                    res.status(200).send({ song: songUpdated })
+                }
+            })
+        } else {
+            res.status(200).send({ message: 'La extension no es correcta' })
+        }
+    } else {
+        res.status(200).send({ message: 'No se ha subido ningun archivo de audio' })
+    }
+}
+
+function getSongFile(req, res) {
+    var songFile = req.params.songFile
+    var path_file = './uploads/songs/' + songFile
+    fs.exists(path_file, function (exists) {
+        if (exists) {
+            res.sendFile(path.resolve(path_file))
+        } else {
+            res.status(200).send({ message: 'no existe el archivo' })
+        }
+    })
+}
+
+
 module.exports ={
     getSong,
     saveSong,
-    getSongs
+    getSongs,
+    updateSong,
+    deleteSong,
+    uploadFile,
+    getSongFile
 }
