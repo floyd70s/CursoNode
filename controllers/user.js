@@ -32,7 +32,6 @@ function saveUser(req, res) {
         //encriptar contraseña
         bcrypt.hash(params.password, null, null, function (err, hash) {
             user.password = hash;
-            console.log(hash)
             if (user.name != null && user.surname != null && user.email != null) {
                 //guardar usuario
                 user.save((err, userStored) => {
@@ -52,8 +51,6 @@ function saveUser(req, res) {
             }
         })
     }
-
-    console.log(params)
 }
 /**
  * @author CPerez
@@ -65,7 +62,6 @@ function loginUser(req, res) {
     var params = req.body
     var email = params.email
     var password = params.password
-    console.log(params)
     User.findOne({ email: email.toLowerCase() }, (err, user) => {
         if (err) {
             res.status(500).send({ message: 'Error en la peticion' })
