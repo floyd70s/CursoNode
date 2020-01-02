@@ -1,11 +1,11 @@
-import { Component, OnInit  } from '@angular/core';
-import {User} from './models/user'
-import {UserService} from './services/user.service'
+import { Component, OnInit } from '@angular/core';
+import { User } from './models/user'
+import { UserService } from './services/user.service'
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html', 
-  providers:[UserService]
+  templateUrl: './app.component.html',
+  providers: [UserService]
 })
 export class AppComponent implements OnInit {
   public title = 'Musify';
@@ -14,23 +14,26 @@ export class AppComponent implements OnInit {
   public token
 
   constructor(
-    private _userService:UserService
-  ){
-    this.user= new User('','','','','','ROLE_USER','')
+    private _userService: UserService
+  ) {
+    this.user = new User('', '', '', '', '', 'ROLE_USER', '')
   }
 
-  ngOnInit(){
+  ngOnInit() {
   }
 
-  public onSubmit(){
-    console.log(this.user)
+  public onSubmit() {
+    console.log('entra al onSubmit')
+    //console.log(this.user)
     this._userService.signup(this.user).subscribe(
       response => {
+        console.log('respuesta:')
         console.log(response)
       },
-      error=>{
-        var errorMessage=<any>error
-        if(errorMessage!=null){
+      error => {
+        console.log('error')
+        var errorMessage = <any>error
+        if (errorMessage != null) {
           console.log(error)
         }
       }
