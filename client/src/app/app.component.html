@@ -7,12 +7,18 @@
 
 <div *ngIf="identity" class="central col-lg-11">
   <p>estas logeado en la aplicacion</p>
+  <input type="submit" value="Cerrar Sesion" (click)="logout()" class="btn btn-warning" />
 </div>
 
 <div class="container" *ngIf="!identity">
   <div class="row justify-content-md-center">
     <div class="col-lg-6">
       <h1>Identificate</h1>
+      <div *ngIf="errorMessage">
+        <div class="alert alert-primary" role="alert">
+          <strong>Error: </strong>{{errorMessage}}
+        </div>
+      </div>
       <form #loginForm="ngForm" (ngSubmit)="onSubmit()" class="col-md-7">
         <p>
           <label>Correo Electronico:</label>
@@ -33,18 +39,35 @@
 
     <div class="col-lg-6">
       <h1>Registrate</h1>
-      <form class="col-md-10">
+      <form #registerForm="ngForm" (ngSubmit)="onSubmitRegister()" class="col-md-10">
         <p>
           <label>Nombre:</label>
-          <input type="text" class="form-control" required />
+          <input type="text" #name='ngModel' name="name" [(ngModel)]="user_register.name"class="form-control" required />
+          <span *ngIf="!name.valid && name.touched">
+            El Nombre es obligatorio
+          </span>
         </p>
         <p>
           <label>Apellidos:</label>
-          <input type="text" class="form-control" required />
+          <input type="text" #surname='ngModel' name="surname" [(ngModel)]="user_register.surname" class="form-control" required />
+          <span *ngIf="!surname.valid && surname.touched">
+            Los apellidos son obligatorios
+          </span>
         </p>
         <p>
           <label>Correo Electronico:</label>
-          <input type="text" class="form-control" required />
+          <input type="text" #email='ngModel' name="email" [(ngModel)]="user_register.email"class="form-control" required />
+          <span *ngIf="!email.valid && email.touched">
+            El email es obligatorio
+          </span>
+        </p>
+        <p>
+          <label>Contraseña:</label>
+          <input type="password" #password="ngModel" name="password" [(ngModel)]="user_register.password"
+          class="form-control" required />
+          <span *ngIf="!password.valid && password.touched">
+            La contraseña es obligatoria
+          </span>
         </p>
         <input type="submit" value="Registrate" class="btn btn-primary" />
       </form>
