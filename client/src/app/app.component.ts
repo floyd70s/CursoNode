@@ -15,7 +15,9 @@ export class AppComponent implements OnInit {
   
   public identity
   public token
+
   public errorMessage
+  public alertRegister
 
   constructor(
     private _userService: UserService
@@ -27,13 +29,9 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.identity = this._userService.getIdentity()
     this.token = this._userService.getToken()
-    console.log('-this.identity:' + this.identity)
-    console.log('-this.token' + this.token)
   }
 
   public onSubmit() {
-    console.log(this.user)
-
     //conseguir los datos del usuario identificado
     this._userService.signup(this.user).subscribe(
       response => {
@@ -53,10 +51,10 @@ export class AppComponent implements OnInit {
               } else {
                 //crear elelmento en el localstorage para tener el token disponible
                 //conseguir el token para enviarlo a cada peticion http
-
-                console.log('T: ' + token)
-                console.log('I: ' + identity)
-
+                localStorage.setItem('token',token)
+                
+                //limpiar usuario
+                this.user = new User('', '', '', '', '', 'ROLE_USER', '')
               }
             },
             error => {
@@ -64,7 +62,6 @@ export class AppComponent implements OnInit {
               if (errorMessage != null) {
                 var body = JSON.parse(error._body)
                 this.errorMessage = body.message
-                console.log('Entra en el error 1:' + error)
               }
             }
           )
@@ -76,10 +73,7 @@ export class AppComponent implements OnInit {
         if (errorMessage != null) {
           var body = JSON.parse(error._body)
           this.errorMessage = body.message
-          //this.errorMessage=error
-          console.log('Entra en el error 2:' + error)
-          this.user.email = ""
-          this.user.password = ""
+          this.user = new User('', '', '', '', '', 'ROLE_USER', '')
         }
       }
     )
@@ -91,12 +85,37 @@ export class AppComponent implements OnInit {
     localStorage.clear()
     this.identity = null
     this.token = null
-    this.user.email = ""
-    this.user.password = ""
+    this.user = new User('', '', '', '', '', 'ROLE_USER', '')
   }
 
   onSubmitRegister(){
-    console.log('this.user_register'+this.user_register)
+    console.log('name:'+this.user_register.name)
+    console.log('surname:'+this.user_register.surname)
+    console.log('email:'+this.user_register.email)
+    console.log('password:'+this.user_register.password)
+
+    this._userService.register(this.user_register).subscribe (
+      response=>{
+          let user=response.user
+          this.user_register=user
+          if(!user._id){
+            this.alertRegister ='error al registrarse'
+          }else{
+            this.alertRegister ='Registro realizado correctamente, identificate con :' + this.user_register.email
+            this.user_register = new User('', '', '', '', '', 'ROLE_USER', '')
+          }
+      },error=>{
+        var errorMessage = <any>error
+
+        if (errorMessage != null) {
+          var body = JSON.parse(error._body)
+          this.alertRegister = body.message
+          console.log('Error en el registro :' + error)
+          
+        }
+      }
+    )
+
   }
 
 
