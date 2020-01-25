@@ -17,7 +17,7 @@ export class UserEditComponent implements OnInit {
     public token
 
     constructor(private _userService: UserService) {
-        this.titulo = '- Actualizar mis datos'
+        this.titulo = 'Actualizar mis datos'
         this.identity = this._userService.getIdentity()
         this.token = this._userService.getToken()
     }
