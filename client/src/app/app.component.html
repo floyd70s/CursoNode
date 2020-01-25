@@ -2,12 +2,19 @@
   <h1>
     {{title}}
   </h1>
+  <span>
+    {{identity.name}} {{identity.surname}}
+  </span>
+  <span class="btn btn-warning" (click)="logout()">
+        Cerrar sesion
+  </span>
 </div>
+
 <div class="clearfix"></div>
 
 <div *ngIf="identity" class="central col-lg-11">
   <p>estas logeado en la aplicacion</p>
-  <input type="submit" value="Cerrar Sesion" (click)="logout()" class="btn btn-warning" />
+  <user-edit></user-edit>
 </div>
 
 <div class="container" *ngIf="!identity">
